@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}My Top 5 Movies{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="heading">My Top 5 Movies<a href="{{ url_for('logout') }}" style="float:right;" class="button">Logout</a></h1>
+  <p class="description" >These are my top 5 favorite movies.</p>
+  <div class="card-box">
+        {% for movie in movies: %}
+      <div class="card" >
+        <div class="front" style="background-image: url('{{movie.img_url}}');">
+            <p class="large">{{movie.ranking}}</p>
+        </div>
+        <div class="back">
+          <div>
+        <div class="title">{{movie.title}} <span class="release_date">({{movie.year}})</span></div>
+            <div class="rating">
+                <label>{{movie.rating}}</label>
+              <i class="fas fa-star star"></i>
+            </div>
+              <p class="review">{{movie.review}}</p>
+            <p class="overview">
+                {{movie.description}}
+            </p>
+
+            <a href="{{ url_for('edit' , id=movie.id) }}" class="button">Update</a>
+            <a href="{{ url_for('delete' , id=movie.id) }}" class="button delete-button">Delete</a>
+
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+  </div>
+  {% if len_mov > 5 %}
+    <div class="container text-center add">
+      <a href="{{ url_for('full') }}" class="button">See Full Movie List</a>
+    </div>
+  {% endif %}
+  <div class="container text-center add">
+    <a href="{{ url_for('add') }}" class="button">Add Movie</a>
+  </div>
+  {% if rec_list[0] %}
+    <h1 class="heading">Movie Recommendations</h1>
+      <div class="card-box">
+            {% for movie in rec_list[1:]: %}
+          <div class="card" >
+            <div class="front" style="background-image: url('{{movie['img_url']}}');">
+            </div>
+            <div class="back">
+              <div>
+            <div class="title">{{movie['title']}} <span class="release_date">({{movie['year']}})</span></div>
+                <div class="rating">
+                  <i class="fas fa-star star"></i>
+                </div>
+                <p class="overview">
+                    {{movie['description']}}
+                </p>
+                <a href="{{ url_for('find', id=movie['tmdb_id']) }}" class="button">Add movie to List</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+      </div>
+  {% endif %}
+</div>
+<div class="container text-center add">
+<a href="{{ url_for('full') }}" class="button">See Full Movie List</a>
+</div>
+
+<div class="container text-center add">
+<a href="{{ url_for('add') }}" class="button">Add Movie</a>
+</div>
+
+{% endblock %}
